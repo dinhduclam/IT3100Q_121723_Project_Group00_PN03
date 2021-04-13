@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-class DeviceList {
+public class DeviceList {
 	private List<Device> dvList = new ArrayList<Device>();
 //	private int amount;
 	private double profit;
@@ -67,9 +67,8 @@ class DeviceList {
 	}
 	
 	public void show() {
-		Iterator<Device> itr = dvList.iterator();
-		while (itr.hasNext()) {
-			itr.next().show();
+		for ( Device dv : dvList) {
+			dv.show();
 		}
 	}
 	

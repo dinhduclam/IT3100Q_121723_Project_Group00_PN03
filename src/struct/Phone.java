@@ -1,6 +1,6 @@
 package struct;
 
-class Phone extends Device{
+public class Phone extends Device{
 	private double screen;
 	private double battery;
 	private double camera;
@@ -14,6 +14,13 @@ class Phone extends Device{
 		this.camera = camera;
 	}
 
+	public Phone(String[] t) {
+		super(t);
+		screen = Double.parseDouble(t[7]);
+		battery = Double.parseDouble(t[8]);
+		camera = Double.parseDouble(t[9]);
+	}
+	
 	public int getType() {
 		return TYPE_OF_PHONE;
 	}

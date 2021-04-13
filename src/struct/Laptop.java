@@ -1,6 +1,6 @@
 package struct;
 
-class Laptop extends Device {
+public class Laptop extends Device {
 	private double cpu;
 	private double ram;
 	private double disk;
@@ -12,6 +12,13 @@ class Laptop extends Device {
 		this.cpu = cpu;
 		this.ram = ram;
 		this.disk = disk;
+	}
+	
+	public Laptop(String[] t) {
+		super(t);
+		cpu = Double.parseDouble(t[7]);
+		ram = Double.parseDouble(t[8]);
+		disk = Double.parseDouble(t[9]);
 	}
 
 	public int getType() {

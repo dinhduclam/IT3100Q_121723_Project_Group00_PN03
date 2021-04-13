@@ -1,17 +1,14 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,31 +17,32 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.DefaultTableModel;
+
+import struct.*;
 
 class Laptop extends JPanel implements ActionListener {
 	private JPanel pnSouth, pnButtonList, pnFillInfor, pnTitle, pnLeft, pnExportExcel;
-	
 	private JButton add, update, clear, delete, export;
 	private JLabel status;
 	private JScrollPane scrollPane;
 	private JTable table;
 	private DefaultTableModel tableModel;
-	private Object[] row = new Object[10];
-	private String[] colTitle;
-	private int numberOfState;
-	private String deviceName;
+//	private Object[] row = new Object[10];
 	private TextField[] textFields = new TextField[10];
 	
 	
-	Laptop(String deviceName, int numberOfState, String[] colTitle) {
-		this.colTitle = colTitle;
-		this.numberOfState = numberOfState;
+	private String deviceName;
+	private int type;
+	private int numberOfState;
+	private String[] colTitle;
+	private DeviceList dvList = new DeviceList();
+	
+	Laptop(String deviceName, int type, int numberOfState, String[] colTitle) {
 		this.deviceName = deviceName;
+		this.type = type;
+		this.numberOfState = numberOfState;
+		this.colTitle = colTitle;
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		createPnLeft(); // pnRight is table
 		/*************/
@@ -57,23 +55,25 @@ class Laptop extends JPanel implements ActionListener {
 
 	private void createTable() {
 		scrollPane = new JScrollPane();
-		scrollPane.setPreferredSize(new Dimension(600, 2));
+		scrollPane.setPreferredSize(new Dimension(600, 0));
 
 		table = new JTable();
+		tableModel = new DefaultTableModel();
+		tableModel.setColumnIdentifiers(colTitle);
+		table.setModel(tableModel);
+		scrollPane.setViewportView(table);
+		add(scrollPane);
+		
 		table.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				int rowIndx = table.getSelectedRow();
-				
+				for (int i=0; i<numberOfState; i++) textFields[i].setText(table.getValueAt(rowIndx, i).toString());
 			}
 		});
-		tableModel = new DefaultTableModel();
-		tableModel.setColumnIdentifiers(colTitle);
-		table.setModel(tableModel);
-		scrollPane.setViewportView(table);
-		add(scrollPane);
+		
 	}
 
 	private void createPnLeft() {
@@ -178,8 +178,46 @@ class Laptop extends JPanel implements ActionListener {
 		return true;
 	}
 
+	private Device getInfo() {
+		String t[] = getInfoReturnString();
+		if (type == 0) return new struct.Laptop(t);
+		else if (type == 1) return new struct.Phone(t);
+		else return null;
+	}
+	
+	private String[] getInfoReturnString() {
+		String t[] = new String[numberOfState];
+		for (int i=0; i<numberOfState; i++)
+			t[i] = textFields[i].getText();
+		return t;
+	}
+	
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
+		if (arg0.getSource() == add) {
+			if (check()) {
+				dvList.add(getInfo());
+				tableModel.addRow(getInfoReturnString());
+				clear();
+			}
+//			dvList.show();
+			
+		}
+		else if (arg0.getSource() == clear) {
+			clear();
+		}
+		else if (arg0.getSource() == update) {
+			int rowIndx = table.getSelectedRow();
+			dvList.modify(type, rowIndx+1, getInfo());
+			for (int i=0; i<numberOfState; i++) table.setValueAt(textFields[i].getText(), rowIndx, i);
+		}
+		else if (arg0.getSource() == delete) {
+			int rowIndx = table.getSelectedRow();
+			while (rowIndx >= 0) {
+				dvList.rm(type, rowIndx+1);
+				tableModel.removeRow(rowIndx);
+				rowIndx = table.getSelectedRow();
+			}
+		}
 	}
 }

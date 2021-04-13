@@ -1,6 +1,6 @@
 package struct;
 
-class Device {
+public class Device {
 	private String make;
 	private int year;
 	private String color;
@@ -17,6 +17,16 @@ class Device {
 		this.model = model;
 		this.price = price;
 		this.costPrice = costPrice;
+	}
+	
+	public Device(String[] t) {
+		this.make = t[0];
+		this.year = Integer.parseInt(t[1]);
+		this.color = t[2];
+		this.name = t[3];
+		this.model = t[4];
+		this.price = Double.parseDouble(t[5]);
+		this.costPrice = Double.parseDouble(t[6]);
 	}
 	
 	public int getType() {
@@ -66,7 +76,7 @@ class Device {
 	}
 	
 	public void show() {
-		System.out.print(make + " " + year + " " + name + " a" + price + " " + costPrice + "a ");
+		System.out.print(make + " " + year + " " + name + " " + price + " " + costPrice + " ");
 	}
 	
 	

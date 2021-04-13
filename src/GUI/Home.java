@@ -23,7 +23,7 @@ class Home extends JFrame implements ActionListener {
 		// TODO Auto-generated constructor stub
 		window();
 		String[] colTitle = { "Make", "Year", "Color", "Name", "Model", "Price", "Cost Price", "CPU", "RAM", "Disk" };
-		laptop = new Laptop("laptop", 10, colTitle);
+		laptop = new Laptop("laptop", 0, 10, colTitle);
 		
 		pnCenter = new JPanel();
 		cardDevice = new JPanel();
