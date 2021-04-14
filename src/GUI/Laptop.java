@@ -200,7 +200,6 @@ class Laptop extends JPanel implements ActionListener {
 				tableModel.addRow(getInfoReturnString());
 				clear();
 			}
-//			dvList.show();
 			
 		}
 		else if (arg0.getSource() == clear) {
@@ -218,6 +217,10 @@ class Laptop extends JPanel implements ActionListener {
 				tableModel.removeRow(rowIndx);
 				rowIndx = table.getSelectedRow();
 			}
+		}
+		else if (arg0.getSource() == export) {
+			dvList.show();
+			System.out.println("--------");
 		}
 	}
 }

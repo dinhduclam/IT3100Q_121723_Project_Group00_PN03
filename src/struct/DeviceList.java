@@ -24,6 +24,7 @@ public class DeviceList {
 			count++;
 		}		
 		if (indx==0) dvList.add(count-1, dvAdd);
+		else dvList.add(dvAdd);
 	}
 	
 	public void rm(int type, int indx) {
