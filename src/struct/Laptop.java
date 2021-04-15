@@ -4,11 +4,10 @@ public class Laptop extends Device {
 	private double cpu;
 	private double ram;
 	private double disk;
-	private final int TYPE_OF_LAPTOP = 0;
 
-	public Laptop(String make, int year, String color, String name, String model, double price, double costPrice,
+	public Laptop(String make, String name, String model, int year, String color, double price, double costPrice,
 			double cpu, double ram, double disk) {
-		super(make, year, color, name, model, price, costPrice);
+		super(make, name, model, year, color, price, costPrice);
 		this.cpu = cpu;
 		this.ram = ram;
 		this.disk = disk;
@@ -22,7 +21,7 @@ public class Laptop extends Device {
 	}
 
 	public int getType() {
-		return TYPE_OF_LAPTOP;
+		return LAPTOP_TYPE;
 	}
 	
 	public double getCpu() {
@@ -53,5 +52,25 @@ public class Laptop extends Device {
 		super.show();
 		System.out.println(cpu + " " + ram + " LAP");
 	}
+
+	@Override
+	public String[] getStringArray() {
+		// TODO Auto-generated method stub
+		
+		String t[] = new String[Device.LAPTOP_NUMBER_OF_STATE];
+		t[0] = super.getMake();
+		t[1] = super.getName();
+		t[2] = super.getModel();
+		t[3] = String.valueOf(super.getYear());
+		t[4] = super.getColor();
+		t[5] = String.valueOf(super.getPrice());
+		t[6] = String.valueOf(super.getCostPrice());
+		t[7] = String.valueOf(cpu);
+		t[8] = String.valueOf(ram);
+		t[9] = String.valueOf(disk);
+		return t;
+	}
+	
+	
 	
 }

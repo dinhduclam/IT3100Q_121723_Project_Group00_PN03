@@ -8,23 +8,29 @@ public class Device {
 	private String model;
 	private double price;
 	private double costPrice;
+	public final static int LAPTOP_TYPE = 0;
+	public final static int PHONE_TYPE = 1;
+	public final static String[] LAPTOP_COLUMN_TITLE = { "Make", "Name", "Model", "Year", "Color", "Price", "Cost Price", "CPU", "RAM", "Disk" };
+	public final static String[] PHONE_COLUMN_TITLE = { "Make", "Name", "Model", "Year", "Color", "Price", "Cost Price", "Screen", "Battery", "Camera" };
+	public final static int LAPTOP_NUMBER_OF_STATE = LAPTOP_COLUMN_TITLE.length;
+	public final static int PHONE_NUMBER_OF_STATE = PHONE_COLUMN_TITLE.length;
 	
-	public Device(String make, int year, String color, String name, String model, double price, double costPrice) {
+	public Device(String make, String name, String model, int year, String color, double price, double costPrice) {
 		this.make = make;
-		this.year = year;
-		this.color = color;
 		this.name = name;
 		this.model = model;
+		this.year = year;
+		this.color = color;
 		this.price = price;
 		this.costPrice = costPrice;
 	}
 	
 	public Device(String[] t) {
 		this.make = t[0];
-		this.year = Integer.parseInt(t[1]);
-		this.color = t[2];
-		this.name = t[3];
-		this.model = t[4];
+		this.name = t[1];
+		this.model = t[2];
+		this.year = Integer.parseInt(t[3]);
+		this.color = t[4];
 		this.price = Double.parseDouble(t[5]);
 		this.costPrice = Double.parseDouble(t[6]);
 	}
@@ -75,8 +81,12 @@ public class Device {
 		this.costPrice = costPrice;
 	}
 	
+	public String[] getStringArray() { 
+		return null;
+	}
+	
 	public void show() {
-		System.out.print(make + " " + year + " " + name + " " + price + " " + costPrice + " ");
+		System.out.print(make + " " + name + " " + price + " " + costPrice + " ");
 	}
 	
 	

@@ -14,16 +14,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import struct.Device;
+
 class Home extends JFrame implements ActionListener {
 	private JButton btLaptop, btPhone;
-	private JPanel pnChoose, pnCenter, cardDevice, laptop;
+	private JPanel pnChoose, pnCenter, cardDevice, laptop, phone;
 	CardLayout card;
 
 	Home() {
 		// TODO Auto-generated constructor stub
 		window();
-		String[] colTitle = { "Make", "Year", "Color", "Name", "Model", "Price", "Cost Price", "CPU", "RAM", "Disk" };
-		laptop = new Laptop("laptop", 0, 10, colTitle);
+		laptop = new DeviceGUI("laptop", Device.LAPTOP_TYPE, Device.LAPTOP_NUMBER_OF_STATE, Device.LAPTOP_COLUMN_TITLE);
+		phone = new DeviceGUI("phone", Device.PHONE_TYPE, Device.PHONE_NUMBER_OF_STATE, Device.PHONE_COLUMN_TITLE);
 		
 		pnCenter = new JPanel();
 		cardDevice = new JPanel();
@@ -31,7 +33,8 @@ class Home extends JFrame implements ActionListener {
 		cardDevice.setLayout(card);
 
 		cardDevice.add("laptop", laptop);
-
+		cardDevice.add("phone", phone);
+		
 		pnCenter.setLayout(new BorderLayout());
 		pnCenter.add(cardDevice, BorderLayout.CENTER);
 		add(pnCenter);
@@ -58,16 +61,16 @@ class Home extends JFrame implements ActionListener {
 		btLaptop.setBounds(0, 89, 130, 47);
 		btLaptop.setBorder(null);
 		pnChoose.add(btLaptop);
-		//btLaptop.addActionListener(this);
+		btLaptop.addActionListener(this);
 
 		btPhone = new JButton("Smartphone");
 		btPhone.setForeground(SystemColor.info);
 		btPhone.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btPhone.setBackground(SystemColor.activeCaption);
-		btPhone.setBounds(0, 132, 130, 47);
+		btPhone.setBounds(0, 136, 130, 47);
 		btPhone.setBorder(null);
 		pnChoose.add(btPhone);
-	//	btPhone.addActionListener(this);
+		btPhone.addActionListener(this);
 
 		JLabel lbTitle = new JLabel("DEVICE MANAGEMENT");
 		lbTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -95,7 +98,7 @@ class Home extends JFrame implements ActionListener {
 	}
 
 	private void set() {
-		setSize(1100, 600);
+		setSize(1200, 700);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setTitle("Device Management");

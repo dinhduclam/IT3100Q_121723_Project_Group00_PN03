@@ -4,11 +4,10 @@ public class Phone extends Device{
 	private double screen;
 	private double battery;
 	private double camera;
-	private final int TYPE_OF_PHONE = 1;
 	
-	public Phone(String make, int year, String color, String name, String model, double price, double costPrice,
+	public Phone(String make, String name, String model, int year, String color, double price, double costPrice,
 			double screen, double battery, double camera) {
-		super(make, year, color, name, model, price, costPrice);
+		super(make, name, model, year, color, price, costPrice);
 		this.screen = screen;
 		this.battery = battery;
 		this.camera = camera;
@@ -22,7 +21,7 @@ public class Phone extends Device{
 	}
 	
 	public int getType() {
-		return TYPE_OF_PHONE;
+		return PHONE_TYPE;
 	}
 
 	public double getScreen() {
@@ -52,6 +51,24 @@ public class Phone extends Device{
 	public void show() {
 		super.show();
 		System.out.println(screen + " " + battery + " PHONE");
+	}
+	
+	@Override
+	public String[] getStringArray() {
+		// TODO Auto-generated method stub
+		
+		String t[] = new String[Device.PHONE_NUMBER_OF_STATE];
+		t[0] = super.getMake();
+		t[1] = super.getName();
+		t[2] = super.getModel();
+		t[3] = String.valueOf(super.getYear());
+		t[4] = super.getColor();
+		t[5] = String.valueOf(super.getPrice());
+		t[6] = String.valueOf(super.getCostPrice());
+		t[7] = String.valueOf(screen);
+		t[8] = String.valueOf(battery);
+		t[9] = String.valueOf(camera);
+		return t;
 	}
 	
 }
