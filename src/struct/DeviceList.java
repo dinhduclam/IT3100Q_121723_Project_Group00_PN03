@@ -49,7 +49,7 @@ public class DeviceList {
 		profit += dvList.get(indx).getPrice() - dvList.get(indx).getCostPrice();
 		rm(indx);
 	}
-	
+
 	public void show() {
 		for ( Device dv : dvList) {
 			dv.show();

@@ -81,6 +81,7 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		pnTitle.add(title);
 
 		/* Create JPanel to fill in information */
+		
 		pnFillInfor = new JPanel();
 		pnFillInfor.setLayout(new GridLayout(0, 2, 10, 10));
 		
@@ -149,12 +150,12 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		pnFind.setLayout(new FlowLayout(FlowLayout.LEADING, 70, 0));
 		pnFind.setPreferredSize(new Dimension(0, 40));
 		
-		pnFind.add(new JLabel("Make:"));
+		pnFind.add(new JLabel("Find by Make:"));
 		makeFind = new TextField();
 		makeFind.addKeyListener(this);
 		pnFind.add(makeFind);
 		
-		pnFind.add(new JLabel("Name:"));
+		pnFind.add(new JLabel("Find by Name:"));
 		nameFind = new TextField();
 		nameFind.addKeyListener(this);
 		pnFind.add(nameFind);
@@ -225,22 +226,12 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	
-//	private void load() {
-//		tableModel.setNumRows(0);
-//		List<Device> dvList = deviceList.getList(); 
-//		for (Device dv : dvList) {
-//			tableModel.addRow(dv.getStringArray());
-//		}
-//	}
-	
-	
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.getSource() == add) {
 			if (check()) {
 				deviceList.add(getInfo());
-				tableModel.addRow(getInfoReturnString());
-				indxList.add(deviceList.size());
+				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
 				clear();
 			}
 			
@@ -253,7 +244,7 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			if (rowIndx < 0) status.setText("Please select the row first!");
 			else if (check()) {
 				deviceList.modify((int) indxList.get(rowIndx), getInfo());
-				for (int i=0; i<numberOfState; i++) table.setValueAt(textFields[i].getText(), (int) indxList.get(rowIndx), i);
+				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
 			}
 		}
 		else if (arg0.getSource() == delete) {
@@ -271,11 +262,10 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			status.setText(String.valueOf(deviceList.getProfit()));
 		}
 		else if (arg0.getSource() == payment) {
-//			int rowIndx = table.getSelectedRow();
-//			deviceList.payment(rowIndx);
-//			tableModel.removeRow(rowIndx);
-//			load(deviceList.findMakeandName("1", ""));
-//			load();
+			int rowIndx = table.getSelectedRow();
+			new Payment(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
+			deviceList.payment((int) indxList.get(rowIndx));
+			load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
 		}
 	}
 
