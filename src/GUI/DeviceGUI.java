@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +25,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import function.CreateExcel;
 import struct.*;
 
 public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
-	private JPanel pnSouth, pnButtonList, pnFillInfor, pnTitle, pnLeft, pnExportAndPay, pnRight, pnFind;
-	private JButton add, update, clear, delete, export, pay;
+	private JButton add, update, clear, delete, export, sell;
 	private JLabel status;
-	private JScrollPane scrollPane;
 	private JTable table;
 	private DefaultTableModel tableModel;
 	private TextField[] textFields = new TextField[10];
@@ -60,7 +61,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	}
 
 	private void createPnLeft() {
-		pnLeft = new JPanel();
+		JPanel pnLeft = new JPanel();
 		pnLeft.setLayout(new BorderLayout(0, 0));
 
 		
@@ -70,7 +71,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		 * Title of object Phone is PHONE
 		 * 
 		 */
-		pnTitle = new JPanel();
+		JPanel pnTitle = new JPanel();
 		pnTitle.setPreferredSize(new Dimension(0, 30));
 		pnLeft.add(pnTitle, BorderLayout.NORTH);
 		pnTitle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -81,7 +82,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 
 		/* Create JPanel to fill in information */
 		
-		pnFillInfor = new JPanel();
+		JPanel 	pnFillInfor = new JPanel();
 		pnFillInfor.setLayout(new GridLayout(0, 2, 10, 10));
 		
 		pnLeft.add(pnFillInfor, BorderLayout.CENTER);
@@ -93,7 +94,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		}
 
 		/* Create Button */
-		pnSouth = new JPanel();
+		JPanel 	pnSouth = new JPanel();
 		pnSouth.setLayout(new BorderLayout(0, 10));
 		pnSouth.setPreferredSize(new Dimension(0, 230));
 
@@ -107,10 +108,10 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		 * pnButtonList contains 4 buttons: Add, Update, Clear, Delete
 		 * 
 		 */
-		pnButtonList = new JPanel();
+		JPanel 	pnButtonList = new JPanel();
 		pnButtonList.setLayout(new GridLayout(2, 2, 10, 10));
 		
-		pnExportAndPay = new JPanel();
+		JPanel 	pnExportAndPay = new JPanel();
 		pnExportAndPay.setLayout(new GridLayout(2, 1, 10, 10));
 		pnExportAndPay.setPreferredSize(new Dimension(0, 85));
 		
@@ -118,7 +119,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		update = new Button(Button.NOMAL_BUTTON, this, "Update");
 		clear = new Button(Button.NOMAL_BUTTON, this, "Clear");
 		delete = new Button(Button.NOMAL_BUTTON, this, "Delete");
-		pay = new Button(Button.NOMAL_BUTTON, this, "Pay");
+		sell = new Button(Button.NOMAL_BUTTON, this, "Sell");
 		export = new Button(Button.NOMAL_BUTTON, this, "Export (Excel)", new ImageIcon("src/icon/excel.png"));
 		
 		pnButtonList.add(add);
@@ -126,7 +127,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		pnButtonList.add(clear);
 		pnButtonList.add(delete);
 		
-		pnExportAndPay.add(pay);
+		pnExportAndPay.add(sell);
 		pnExportAndPay.add(export);
 		
 		pnSouth.add(pnButtonList);
@@ -137,10 +138,10 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	}
 
 	private void createPnRight() {
-		pnRight = new JPanel();
+		JPanel 	pnRight = new JPanel();
 		pnRight.setLayout(new BorderLayout());
 		
-		pnFind = new JPanel();
+		JPanel 	pnFind = new JPanel();
 		pnFind.setLayout(new FlowLayout(FlowLayout.LEADING, 70, 0));
 		pnFind.setPreferredSize(new Dimension(0, 40));
 		
@@ -161,7 +162,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		tableModel.setColumnIdentifiers(colTitle);
 		table.setModel(tableModel);
 		
-		scrollPane = new JScrollPane(table);
+		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setPreferredSize(new Dimension(600, 0));
 		pnRight.add(scrollPane);
 
@@ -182,7 +183,6 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	private void clear() {
 		for (int i=0; i<numberOfState; i++)
 			textFields[i].setText("");
-		status.setText("");
 	}
 
 	// check
@@ -232,13 +232,15 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		}
 		else if (arg0.getSource() == clear) {
 			clear();
+			status.setText("");
 		}
 		else if (arg0.getSource() == update) {
 			int rowIndx = table.getSelectedRow();
-			if (rowIndx < 0) status.setText("Please select the row first!");
+			if (rowIndx < 0) status.setText("Please select a row first!");
 			else if (check()) {
 				deviceList.modify((int) indxList.get(rowIndx), getInfo());
 				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+				clear();
 			}
 		}
 		else if (arg0.getSource() == delete) {
@@ -247,21 +249,30 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 				deviceList.rm((int) indxList.get(rowIndx));
 				tableModel.removeRow(rowIndx);
 				rowIndx = table.getSelectedRow();
+				clear();
 			}
 		}
 		else if (arg0.getSource() == export) {
-			deviceList.show();
-			System.out.println("--------");
-			status.setText(String.valueOf(deviceList.getProfit()));
+			CreateExcel excel;
+			try {
+				excel = new CreateExcel(deviceList.getList(), colTitle, deviceName);
+				status.setText("Created file: " + excel.getPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		else if (arg0.getSource() == pay) {
-			
+		else if (arg0.getSource() == sell) {
 			int rowIndx = table.getSelectedRow();
-			if (rowIndx < 0) status.setText("Please select the row first!");
+			if (rowIndx < 0) status.setText("Please select a row first!");
 			else {
 				new Payment(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
 				deviceList.pay((int) indxList.get(rowIndx));
 				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+				clear();
 			}
 		}
 	}
