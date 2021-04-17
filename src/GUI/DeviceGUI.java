@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -58,8 +59,22 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		add(separator);
 		/*************/
 		createPnRight();
+		loadDataTest();
 	}
 
+	public void loadDataTest() {
+		String testData[][];
+		if (type == Device.LAPTOP_TYPE) testData = Device.LAPTOP_TEST_DATA;
+		else testData = Device.PHONE_TEST_DATA;
+		
+		for (String[] o : testData) {
+			if (type == Device.LAPTOP_TYPE) deviceList.add(new Laptop(o));
+			else deviceList.add(new Phone(o));
+		}
+		load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+	}
+	
+	
 	private void createPnLeft() {
 		JPanel pnLeft = new JPanel();
 		pnLeft.setLayout(new BorderLayout(0, 0));

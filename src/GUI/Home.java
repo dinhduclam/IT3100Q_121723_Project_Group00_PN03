@@ -19,7 +19,7 @@ public class Home extends JFrame implements ActionListener {
 	private Button btLaptop, btPhone, btHistory;
 	private JPanel pnChoose, pnCenter, cardDevice, laptop, phone, history;
 	private CardLayout card;
-
+	
 	public Home() {
 		// TODO Auto-generated constructor stub
 		window();
