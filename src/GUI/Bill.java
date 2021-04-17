@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 
 public class Bill extends JFrame{
 	Bill(String a[], String []b, String fullName, String address, String phoneNumber){
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(0, 10));
 		
 		JPanel pnWest = new JPanel();
 		add(pnWest, BorderLayout.WEST);
@@ -26,7 +26,7 @@ public class Bill extends JFrame{
 		JLabel title = new JLabel("BILL");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Tahoma", Font.BOLD, 20));
-		title.setPreferredSize(new Dimension(0, 50));
+		title.setPreferredSize(new Dimension(0, 40));
 		add(title, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
@@ -48,10 +48,10 @@ public class Bill extends JFrame{
 		}
 		
 		JPanel pnSouth = new JPanel();
-		pnSouth.setPreferredSize(new Dimension(0, 60));
+		pnSouth.setPreferredSize(new Dimension(0, 50));
 		add(pnSouth, BorderLayout.SOUTH);
 		pnSouth.setLayout(new FlowLayout(FlowLayout.CENTER));
-		Button close = new Button(new ActionListener() {
+		Button close = new Button(Button.NOMAL_BUTTON, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -59,7 +59,7 @@ public class Bill extends JFrame{
 				dispose();
 			}
 		}, "Close");
-		close.setPreferredSize(new Dimension(80, 35));
+		close.setPreferredSize(new Dimension(100, 32));
 		pnSouth.add(close);
 		
 		set();

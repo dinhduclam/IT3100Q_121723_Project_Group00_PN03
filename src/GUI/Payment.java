@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +17,7 @@ public class Payment extends JFrame{
 	TextField fullName, adress, phoneNumber;
 	
 	public Payment(String a[], String []b){
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(0, 10));
 		
 		JPanel pnWest = new JPanel();
 		add(pnWest, BorderLayout.WEST);
@@ -29,7 +28,7 @@ public class Payment extends JFrame{
 		JLabel title = new JLabel("INFOMATION");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Tahoma", Font.BOLD, 20));
-		title.setPreferredSize(new Dimension(0, 50));
+		title.setPreferredSize(new Dimension(0, 40));
 		add(title, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
@@ -48,10 +47,10 @@ public class Payment extends JFrame{
 		panel.add(phoneNumber);
 		
 		JPanel pnSouth = new JPanel();
-		pnSouth.setPreferredSize(new Dimension(0, 60));
+		pnSouth.setPreferredSize(new Dimension(0, 50));
 		add(pnSouth, BorderLayout.SOUTH);
 		pnSouth.setLayout(new FlowLayout(FlowLayout.CENTER));
-		Button ok = new Button(new ActionListener() {
+		Button ok = new Button(Button.NOMAL_BUTTON, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -60,7 +59,7 @@ public class Payment extends JFrame{
 				dispose();
 			}
 		}, "OK");
-		ok.setPreferredSize(new Dimension(80, 35));
+		ok.setPreferredSize(new Dimension(100, 32));
 		pnSouth.add(ok);
 		
 		set();

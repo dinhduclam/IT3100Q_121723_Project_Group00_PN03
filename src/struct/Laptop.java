@@ -1,12 +1,12 @@
 package struct;
 
 public class Laptop extends Device {
-	private double cpu;
-	private double ram;
-	private double disk;
+	private String cpu;
+	private String ram;
+	private String disk;
 
 	public Laptop(String make, String name, String model, int year, String color, double price, double costPrice,
-			double cpu, double ram, double disk) {
+			String cpu, String ram, String disk) {
 		super(make, name, model, year, color, price, costPrice);
 		this.cpu = cpu;
 		this.ram = ram;
@@ -15,36 +15,36 @@ public class Laptop extends Device {
 	
 	public Laptop(String[] t) {
 		super(t);
-		cpu = Double.parseDouble(t[7]);
-		ram = Double.parseDouble(t[8]);
-		disk = Double.parseDouble(t[9]);
+		cpu = t[7];
+		ram = t[8];
+		disk = t[9];
 	}
 
 	public int getType() {
 		return LAPTOP_TYPE;
 	}
 	
-	public double getCpu() {
+	public String getCpu() {
 		return cpu;
 	}
 
-	public void setCpu(double cpu) {
+	public void setCpu(String cpu) {
 		this.cpu = cpu;
 	}
 
-	public double getRam() {
+	public String getRam() {
 		return ram;
 	}
 
-	public void setRam(double ram) {
+	public void setRam(String ram) {
 		this.ram = ram;
 	}
 
-	public double getDisk() {
+	public String getDisk() {
 		return disk;
 	}
 
-	public void setDisk(double disk) {
+	public void setDisk(String disk) {
 		this.disk = disk;
 	}
 
@@ -65,9 +65,9 @@ public class Laptop extends Device {
 		t[4] = super.getColor();
 		t[5] = String.valueOf(super.getPrice());
 		t[6] = String.valueOf(super.getCostPrice());
-		t[7] = String.valueOf(cpu);
-		t[8] = String.valueOf(ram);
-		t[9] = String.valueOf(disk);
+		t[7] = cpu;
+		t[8] = ram;
+		t[9] = disk;
 		return t;
 	}
 	

@@ -1,16 +1,21 @@
 package struct;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class DeviceList {
 	private List<Device> dvList = new ArrayList<Device>();
 //	private int amount;
-	private double profit;
+	private static double profit;
+	private static List<Device> paidList = new ArrayList<>();
 	
-	public List getList() {
+	
+	public List<Device> getList() {
 		return dvList;
+	}
+	
+	public List<Device> getPaidList() {
+		return paidList;
 	}
 	
 	public int size() {
@@ -34,8 +39,8 @@ public class DeviceList {
 		add(indx, dvModify);
 	}
 	
-	public List findMakeandName(String make, String name) {
-		List indxList = new ArrayList<>();
+	public List<Integer> findMakeandName(String make, String name) {
+		List<Integer> indxList = new ArrayList<>();
 		int indx = 0;
 		for (Device d : dvList) {
 			if (d.getName().contains(name) && d.getMake().contains(make)) indxList.add(indx);
@@ -44,9 +49,10 @@ public class DeviceList {
 		return indxList;
 	}
 	
-	public void payment(int indx) {
+	public void pay(int indx) {
 		// return thong tin
 		profit += dvList.get(indx).getPrice() - dvList.get(indx).getCostPrice();
+		paidList.add(dvList.get(indx));
 		rm(indx);
 	}
 

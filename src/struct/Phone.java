@@ -1,12 +1,12 @@
 package struct;
 
 public class Phone extends Device{
-	private double screen;
-	private double battery;
-	private double camera;
+	private String screen;
+	private String battery;
+	private String camera;
 	
 	public Phone(String make, String name, String model, int year, String color, double price, double costPrice,
-			double screen, double battery, double camera) {
+			String screen, String battery, String camera) {
 		super(make, name, model, year, color, price, costPrice);
 		this.screen = screen;
 		this.battery = battery;
@@ -15,36 +15,36 @@ public class Phone extends Device{
 
 	public Phone(String[] t) {
 		super(t);
-		screen = Double.parseDouble(t[7]);
-		battery = Double.parseDouble(t[8]);
-		camera = Double.parseDouble(t[9]);
+		screen = t[7];
+		battery = t[8];
+		camera = t[9];
 	}
 	
 	public int getType() {
 		return PHONE_TYPE;
 	}
 
-	public double getScreen() {
+	public String getScreen() {
 		return screen;
 	}
 
-	public void setScreen(double screen) {
+	public void setScreen(String screen) {
 		this.screen = screen;
 	}
 
-	public double getBattery() {
+	public String getBattery() {
 		return battery;
 	}
 
-	public void setBattery(double battery) {
+	public void setBattery(String battery) {
 		this.battery = battery;
 	}
 
-	public double getCamera() {
+	public String getCamera() {
 		return camera;
 	}
 
-	public void setCamera(double camera) {
+	public void setCamera(String camera) {
 		this.camera = camera;
 	}
 	
@@ -65,9 +65,9 @@ public class Phone extends Device{
 		t[4] = super.getColor();
 		t[5] = String.valueOf(super.getPrice());
 		t[6] = String.valueOf(super.getCostPrice());
-		t[7] = String.valueOf(screen);
-		t[8] = String.valueOf(battery);
-		t[9] = String.valueOf(camera);
+		t[7] = screen;
+		t[8] = battery;
+		t[9] = camera;
 		return t;
 	}
 	

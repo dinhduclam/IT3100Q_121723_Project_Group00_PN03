@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -26,9 +25,9 @@ import javax.swing.table.DefaultTableModel;
 
 import struct.*;
 
-class DeviceGUI extends JPanel implements ActionListener, KeyListener {
-	private JPanel pnSouth, pnButtonList, pnFillInfor, pnTitle, pnLeft, pnExportAndPayment, pnRight, pnFind;
-	private JButton add, update, clear, delete, export, payment, find;
+public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
+	private JPanel pnSouth, pnButtonList, pnFillInfor, pnTitle, pnLeft, pnExportAndPay, pnRight, pnFind;
+	private JButton add, update, clear, delete, export, pay;
 	private JLabel status;
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -41,7 +40,7 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	private int numberOfState;
 	private String[] colTitle;
 	private DeviceList deviceList = new DeviceList();
-	private List indxList = new ArrayList<>();
+	private List<Integer> indxList = new ArrayList<>();
 	
 	DeviceGUI(String deviceName, int type, int numberOfState, String[] colTitle) {
 		this.deviceName = deviceName;
@@ -95,13 +94,13 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 
 		/* Create Button */
 		pnSouth = new JPanel();
-		pnSouth.setLayout(new BorderLayout());
+		pnSouth.setLayout(new BorderLayout(0, 10));
 		pnSouth.setPreferredSize(new Dimension(0, 230));
 
 		pnLeft.add(pnSouth, BorderLayout.SOUTH);
 
 		status = new JLabel("");
-		status.setPreferredSize(new Dimension(0, 50));
+		status.setPreferredSize(new Dimension(0, 40));
 		pnSouth.add(status, BorderLayout.NORTH);
 
 		/* Create 6 buttons: Add, Update, Clear, Delete, Export, Payment
@@ -110,33 +109,28 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		 */
 		pnButtonList = new JPanel();
 		pnButtonList.setLayout(new GridLayout(2, 2, 10, 10));
-
-		pnExportAndPayment = new JPanel();
-		pnExportAndPayment.setLayout(new BorderLayout());
 		
-		JPanel pnExportAndPayment2 = new JPanel();
-		pnExportAndPayment2.setLayout(new GridLayout(2, 1, 10, 10));
-		pnExportAndPayment2.setPreferredSize(new Dimension(0, 85));
+		pnExportAndPay = new JPanel();
+		pnExportAndPay.setLayout(new GridLayout(2, 1, 10, 10));
+		pnExportAndPay.setPreferredSize(new Dimension(0, 85));
 		
-		add = new Button(this, "Add");
-		update = new Button(this, "Update");
-		clear = new Button(this, "Clear");
-		delete = new Button(this, "Delete");
-		payment = new Button(this, "Payment");
-		export = new Button(this, "Export (Excel)", new ImageIcon("src/icon/excel.png"));
+		add = new Button(Button.NOMAL_BUTTON, this, "Add");
+		update = new Button(Button.NOMAL_BUTTON, this, "Update");
+		clear = new Button(Button.NOMAL_BUTTON, this, "Clear");
+		delete = new Button(Button.NOMAL_BUTTON, this, "Delete");
+		pay = new Button(Button.NOMAL_BUTTON, this, "Pay");
+		export = new Button(Button.NOMAL_BUTTON, this, "Export (Excel)", new ImageIcon("src/icon/excel.png"));
 		
 		pnButtonList.add(add);
 		pnButtonList.add(update);
 		pnButtonList.add(clear);
 		pnButtonList.add(delete);
 		
-		pnExportAndPayment.add(new JPanel(), BorderLayout.NORTH);
-		pnExportAndPayment2.add(payment);
-		pnExportAndPayment2.add(export);
-		pnExportAndPayment.add(pnExportAndPayment2);
+		pnExportAndPay.add(pay);
+		pnExportAndPay.add(export);
 		
 		pnSouth.add(pnButtonList);
-		pnSouth.add(pnExportAndPayment, BorderLayout.SOUTH);
+		pnSouth.add(pnExportAndPay, BorderLayout.SOUTH);
 		/*--------------*/
 
 		add(pnLeft);
@@ -217,12 +211,12 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		return t;
 	}
 	
-	private void load(List indxList) {
+	private void load(List<Integer> indxList) {
 		this.indxList = indxList;
 		tableModel.setNumRows(0);
 
-		for (Object indx : indxList) {
-			tableModel.addRow(deviceList.getDevice((int)indx).getStringArray());
+		for (Integer indx : indxList) {
+			tableModel.addRow(deviceList.getDevice(indx).getStringArray());
 		}
 	}
 	
@@ -252,7 +246,6 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			while (rowIndx >= 0) {
 				deviceList.rm((int) indxList.get(rowIndx));
 				tableModel.removeRow(rowIndx);
-//				indxList.remove(indxList.size()-1);
 				rowIndx = table.getSelectedRow();
 			}
 		}
@@ -261,11 +254,15 @@ class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			System.out.println("--------");
 			status.setText(String.valueOf(deviceList.getProfit()));
 		}
-		else if (arg0.getSource() == payment) {
+		else if (arg0.getSource() == pay) {
+			
 			int rowIndx = table.getSelectedRow();
-			new Payment(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
-			deviceList.payment((int) indxList.get(rowIndx));
-			load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+			if (rowIndx < 0) status.setText("Please select the row first!");
+			else {
+				new Payment(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
+				deviceList.pay((int) indxList.get(rowIndx));
+				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+			}
 		}
 	}
 

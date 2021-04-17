@@ -8,7 +8,6 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,16 +15,17 @@ import javax.swing.SwingConstants;
 
 import struct.Device;
 
-class Home extends JFrame implements ActionListener {
-	private JButton btLaptop, btPhone;
-	private JPanel pnChoose, pnCenter, cardDevice, laptop, phone;
-	CardLayout card;
+public class Home extends JFrame implements ActionListener {
+	private Button btLaptop, btPhone, btHistory;
+	private JPanel pnChoose, pnCenter, cardDevice, laptop, phone, history;
+	private CardLayout card;
 
-	Home() {
+	public Home() {
 		// TODO Auto-generated constructor stub
 		window();
 		laptop = new DeviceGUI("laptop", Device.LAPTOP_TYPE, Device.LAPTOP_NUMBER_OF_STATE, Device.LAPTOP_COLUMN_TITLE);
-		phone = new DeviceGUI("phone", Device.PHONE_TYPE, Device.PHONE_NUMBER_OF_STATE, Device.PHONE_COLUMN_TITLE);
+		phone = new DeviceGUI("smart phone", Device.PHONE_TYPE, Device.PHONE_NUMBER_OF_STATE, Device.PHONE_COLUMN_TITLE);
+		history = new History();
 		
 		pnCenter = new JPanel();
 		cardDevice = new JPanel();
@@ -34,6 +34,7 @@ class Home extends JFrame implements ActionListener {
 
 		cardDevice.add("laptop", laptop);
 		cardDevice.add("phone", phone);
+		cardDevice.add("history", history);
 		
 		pnCenter.setLayout(new BorderLayout());
 		pnCenter.add(cardDevice, BorderLayout.CENTER);
@@ -54,24 +55,19 @@ class Home extends JFrame implements ActionListener {
 		welcome.setFont(new Font("Tahoma", Font.BOLD, 14));
 		pnChoose.add(welcome);
 
-		btLaptop = new JButton("Laptop");
-		btLaptop.setForeground(SystemColor.info);
-		btLaptop.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btLaptop = new Button(Button.CHOOSE_BUTTON, this, "Laptop");
 		btLaptop.setBackground(SystemColor.activeCaptionBorder);
-		btLaptop.setBounds(0, 89, 130, 47);
-		btLaptop.setBorder(null);
+		btLaptop.setBounds(0, 90, 130, 47);
 		pnChoose.add(btLaptop);
-		btLaptop.addActionListener(this);
-
-		btPhone = new JButton("Smartphone");
-		btPhone.setForeground(SystemColor.info);
-		btPhone.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btPhone.setBackground(SystemColor.activeCaption);
-		btPhone.setBounds(0, 136, 130, 47);
-		btPhone.setBorder(null);
+		
+		btPhone = new Button(Button.CHOOSE_BUTTON, this, "Smartphone");
+		btPhone.setBounds(0, 137, 130, 47);
 		pnChoose.add(btPhone);
-		btPhone.addActionListener(this);
-
+		
+		btHistory = new Button(Button.CHOOSE_BUTTON, this, "History");
+		btHistory.setBounds(0, 570, 130, 47);
+		pnChoose.add(btHistory);
+		
 		JLabel lbTitle = new JLabel("DEVICE MANAGEMENT");
 		lbTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
 
@@ -86,6 +82,7 @@ class Home extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		btLaptop.setBackground(SystemColor.activeCaption);
 		btPhone.setBackground(SystemColor.activeCaption);
+		btHistory.setBackground(SystemColor.activeCaption);
 		
 		if (arg0.getSource() == btLaptop) {
 			card.show(cardDevice, "laptop");
@@ -93,6 +90,10 @@ class Home extends JFrame implements ActionListener {
 		} else if (arg0.getSource() == btPhone) {
 			card.show(cardDevice, "phone");
 			btPhone.setBackground(SystemColor.activeCaptionBorder);
+		}
+		else if (arg0.getSource() == btHistory) {
+			card.show(cardDevice, "history");
+			btHistory.setBackground(SystemColor.activeCaptionBorder);
 		}
 
 	}
@@ -102,9 +103,5 @@ class Home extends JFrame implements ActionListener {
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setTitle("Device Management");
-	}
-	
-	public static void main(String[] args) {
-		new Home();
 	}
 }
