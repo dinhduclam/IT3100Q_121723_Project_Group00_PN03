@@ -39,11 +39,11 @@ public class DeviceList {
 		add(indx, dvModify);
 	}
 	
-	public List<Integer> findMakeandName(String make, String name) {
+	public List<Integer> searchByMakeAndName(String make, String name) {
 		List<Integer> indxList = new ArrayList<>();
 		int indx = 0;
 		for (Device d : dvList) {
-			if (d.getName().contains(name) && d.getMake().contains(make)) indxList.add(indx);
+			if (d.getName().toUpperCase().contains(name.toUpperCase()) && d.getMake().toUpperCase().contains(make.toUpperCase())) indxList.add(indx);
 			indx++;
 		}
 		return indxList;
@@ -67,7 +67,7 @@ public class DeviceList {
 	}
 	
 	public double getProfit() {
-		return profit;
+		return (double) Math.round(profit*100)/100;
 	}
 	
 }

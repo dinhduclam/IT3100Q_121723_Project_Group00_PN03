@@ -42,7 +42,7 @@ public class History extends JPanel{
 		pn2Table.setLayout(new BoxLayout(pn2Table, BoxLayout.X_AXIS));
 		
 		/* 
-		 * Table Laptop 
+		 * Laptop Table 
 		 */
 		
 		JPanel pnLaptop = new JPanel();
@@ -71,7 +71,7 @@ public class History extends JPanel{
 		pn2Table.add(separator);
 		
 		/*  
-		 * Table Phone
+		 * Phone Table
 		 */
 		
 		JPanel pnPhone = new JPanel();
@@ -112,7 +112,7 @@ public class History extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				load();
-				status.setText("Total Profit: " + String.valueOf(dvList.getProfit()) + " VND");
+				status.setText("Total Profit: " + String.valueOf(dvList.getProfit()) + " USD");
 			}
 		}, "Load");
 		pnSouth.add(btLoad);
@@ -125,6 +125,7 @@ public class History extends JPanel{
 		for (Device dv : paidList) {
 			String s[] = dv.getStringArray();
 			double profit = Double.parseDouble(s[5]) - Double.parseDouble(s[6]);
+			profit = (double) Math.round(profit*100)/100;
 			String t[] = {s[0], s[1], s[2] , s[5], s[6], String.valueOf(profit)};
 			if (dv.getType() == Device.LAPTOP_TYPE) {
 				tableModelLaptop.addRow(t);

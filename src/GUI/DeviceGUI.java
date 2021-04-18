@@ -34,8 +34,8 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	private JLabel status;
 	private JTable table;
 	private DefaultTableModel tableModel;
-	private TextField[] textFields = new TextField[10];
-	private TextField makeFind, nameFind;
+	private TextField[] stateTextFields = new TextField[10];
+	private TextField brandSearch, nameSearch;
 	
 	private String deviceName;
 	private int type;
@@ -71,7 +71,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			if (type == Device.LAPTOP_TYPE) deviceList.add(new Laptop(o));
 			else deviceList.add(new Phone(o));
 		}
-		load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+		load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
 	}
 	
 	
@@ -104,8 +104,8 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		
 		for (int i=0; i<numberOfState; i++) {
 			pnFillInfor.add(new JLabel(colTitle[i]));
-			textFields[i] = new TextField();
-			pnFillInfor.add(textFields[i]);
+			stateTextFields[i] = new TextField();
+			pnFillInfor.add(stateTextFields[i]);
 		}
 
 		/* Create Button */
@@ -161,14 +161,14 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		pnFind.setPreferredSize(new Dimension(0, 40));
 		
 		pnFind.add(new JLabel("Find by Make:"));
-		makeFind = new TextField();
-		makeFind.addKeyListener(this);
-		pnFind.add(makeFind);
+		brandSearch = new TextField();
+		brandSearch.addKeyListener(this);
+		pnFind.add(brandSearch);
 		
 		pnFind.add(new JLabel("Find by Name:"));
-		nameFind = new TextField();
-		nameFind.addKeyListener(this);
-		pnFind.add(nameFind);
+		nameSearch = new TextField();
+		nameSearch.addKeyListener(this);
+		pnFind.add(nameSearch);
 		pnRight.add(pnFind, BorderLayout.NORTH);
 		
 
@@ -187,25 +187,25 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			public void mouseClicked(MouseEvent arg0) {
 				// TODO Auto-generated method stub
 				int rowIndx = table.getSelectedRow();
-				for (int i=0; i<numberOfState; i++) textFields[i].setText(table.getValueAt(rowIndx, i).toString());
+				for (int i=0; i<numberOfState; i++) stateTextFields[i].setText(table.getValueAt(rowIndx, i).toString());
 			}
 		});
 		add(pnRight);
 	}
 	
 	
-	// clear all text in the textfield (make, manufacturing year, price, color,...)
+	// clear all text in the stateTextFields (make, manufacturing year, price, color,...)
 	private void clear() {
 		for (int i=0; i<numberOfState; i++)
-			textFields[i].setText("");
+			stateTextFields[i].setText("");
 	}
 
 	// check
 	private boolean check() {
 		String noti = "Please fill all the form!";
 		for (int i=0; i<numberOfState; i++)
-			if (textFields[i].getText().equals("")) {
-				textFields[i].requestFocus();
+			if (stateTextFields[i].getText().equals("")) {
+				stateTextFields[i].requestFocus();
 				status.setText(noti);
 				return false;
 			}
@@ -222,7 +222,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	private String[] getInfoReturnString() {
 		String t[] = new String[numberOfState];
 		for (int i=0; i<numberOfState; i++)
-			t[i] = textFields[i].getText();
+			t[i] = stateTextFields[i].getText();
 		return t;
 	}
 	
@@ -240,7 +240,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		if (arg0.getSource() == add) {
 			if (check()) {
 				deviceList.add(getInfo());
-				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+				load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
 				clear();
 			}
 			
@@ -254,7 +254,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			if (rowIndx < 0) status.setText("Please select a row first!");
 			else if (check()) {
 				deviceList.modify((int) indxList.get(rowIndx), getInfo());
-				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+				load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
 				clear();
 			}
 		}
@@ -286,7 +286,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			else {
 				new Payment(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
 				deviceList.pay((int) indxList.get(rowIndx));
-				load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+				load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
 				clear();
 			}
 		}
@@ -301,7 +301,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		load(deviceList.findMakeandName(makeFind.getText(), nameFind.getText()));
+		load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
 	}
 
 	@Override
