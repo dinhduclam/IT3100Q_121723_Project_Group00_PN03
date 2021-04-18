@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -154,18 +155,22 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 
 	private void createPnRight() {
 		JPanel 	pnRight = new JPanel();
-		pnRight.setLayout(new BorderLayout());
+		pnRight.setLayout(new BorderLayout(0, 20));
 		
 		JPanel 	pnFind = new JPanel();
-		pnFind.setLayout(new FlowLayout(FlowLayout.LEADING, 70, 0));
-		pnFind.setPreferredSize(new Dimension(0, 40));
+		pnFind.setLayout(new BoxLayout(pnFind, BoxLayout.X_AXIS));
+		pnFind.setPreferredSize(new Dimension(0, 20));
 		
-		pnFind.add(new JLabel("Find by Make:"));
+		pnFind.add(new JLabel("Search by Brand: "));
 		brandSearch = new TextField();
 		brandSearch.addKeyListener(this);
 		pnFind.add(brandSearch);
 		
-		pnFind.add(new JLabel("Find by Name:"));
+		JPanel separator = new JPanel();
+		separator.setPreferredSize(new Dimension(50, 0));
+		pnFind.add(separator);
+		
+		pnFind.add(new JLabel("Search by Name: "));
 		nameSearch = new TextField();
 		nameSearch.addKeyListener(this);
 		pnFind.add(nameSearch);

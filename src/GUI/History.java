@@ -31,7 +31,7 @@ public class History extends JPanel{
 		
 		setLayout(new BorderLayout(0, 10));
 		
-		JLabel title = new JLabel("HISTORY");
+		JLabel title = new JLabel("SALE HISTORY");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Tahoma", Font.BOLD, 20));
 		title.setPreferredSize(new Dimension(0, 40));
@@ -48,7 +48,7 @@ public class History extends JPanel{
 		JPanel pnLaptop = new JPanel();
 		pnLaptop.setLayout(new BorderLayout());
 		
-		JLabel titleLaptop = new JLabel("LAPTOP");
+		JLabel titleLaptop = new JLabel("LAPTOP ITEMS");
 		titleLaptop.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLaptop.setFont(new Font("Tahoma", Font.BOLD, 16));
 		titleLaptop.setPreferredSize(new Dimension(0, 30));
@@ -77,7 +77,7 @@ public class History extends JPanel{
 		JPanel pnPhone = new JPanel();
 		pnPhone.setLayout(new BorderLayout());
 		
-		JLabel titlePhone = new JLabel("SMART PHONE");
+		JLabel titlePhone = new JLabel("SMARTPHONE ITEMS");
 		titlePhone.setHorizontalAlignment(SwingConstants.CENTER);
 		titlePhone.setFont(new Font("Tahoma", Font.BOLD, 16));
 		titlePhone.setPreferredSize(new Dimension(0, 30));
