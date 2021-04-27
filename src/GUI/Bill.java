@@ -15,7 +15,7 @@ import javax.swing.SwingConstants;
 
 public class Bill extends JFrame{
 	Bill(String a[], String []b, String fullName, String address, String phoneNumber){
-		setLayout(new BorderLayout(0, 10));
+		setLayout(new BorderLayout(15, 15));
 		
 		JPanel pnWest = new JPanel();
 		add(pnWest, BorderLayout.WEST);
@@ -68,7 +68,7 @@ public class Bill extends JFrame{
 	private void set() {
 		setSize(400, 500);
 		setLocationRelativeTo(null);
-		setTitle("Fill Infomation");
+		setTitle("Bill");
 		setVisible(true);
 	}
 }

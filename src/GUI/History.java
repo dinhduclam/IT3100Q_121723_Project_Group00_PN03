@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -16,15 +17,15 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import struct.Customer;
 import struct.Device;
-import struct.DeviceList;
 
 public class History extends JPanel{
 
 	private JTable tableLaptop, tablePhone;
 	private DefaultTableModel tableModelLaptop, tableModelPhone;
-	DeviceList dvList = new DeviceList();
-	private List<Device> paidList = dvList.getPaidList();
+	private List<Device> paidList = struct.History.getPaidList();
+	private List<Customer> customers = struct.History.getCustomers();
 	
 	public History() {
 		// TODO Auto-generated constructor stub
@@ -58,7 +59,7 @@ public class History extends JPanel{
 		pnLaptop.add(scrollPaneLaptop);
 		pn2Table.add(pnLaptop);
 		
-		String t[] = {"Make", "Name", "Model", "Price", "Cost Price", "PROFIT"};
+		String t[] = {"Customer Name", "Make", "Name", "Model", "Price", "Cost Price", "PROFIT"};
 		tableModelLaptop = new DefaultTableModel();
 		tableModelLaptop.setColumnIdentifiers(t);
 		
@@ -112,7 +113,7 @@ public class History extends JPanel{
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				load();
-				status.setText("Total Profit: " + String.valueOf(dvList.getProfit()) + " USD");
+				status.setText("Total Profit: " + String.valueOf(struct.History.getProfit()) + " USD");
 			}
 		}, "Load");
 		pnSouth.add(btLoad);
@@ -122,11 +123,17 @@ public class History extends JPanel{
 		tableModelLaptop.setNumRows(0);
 		tableModelPhone.setNumRows(0);
 
-		for (Device dv : paidList) {
+		Iterator<Device> itrDv = paidList.iterator();
+		Iterator<Customer> itrCustomer = customers.iterator();
+		
+		while (itrDv.hasNext()) {
+			Device dv = itrDv.next();
+			Customer customer = itrCustomer.next();
 			String s[] = dv.getStringArray();
+			
 			double profit = Double.parseDouble(s[5]) - Double.parseDouble(s[6]);
 			profit = (double) Math.round(profit*100)/100;
-			String t[] = {s[0], s[1], s[2] , s[5], s[6], String.valueOf(profit)};
+			String t[] = {customer.getFullName(), s[0], s[1], s[2] , s[5], s[6], String.valueOf(profit)};
 			if (dv.getType() == Device.LAPTOP_TYPE) {
 				tableModelLaptop.addRow(t);
 			}

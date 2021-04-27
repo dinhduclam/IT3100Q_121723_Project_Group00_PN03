@@ -13,10 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class Payment extends JFrame{
-	TextField fullName, adress, phoneNumber;
+import struct.Customer;
+import struct.History;
+
+public class CustomerInfo extends JFrame{
+	TextField fullName, address, phoneNumber;
 	
-	public Payment(String a[], String []b){
+	public CustomerInfo(String a[], String []b){
 		setLayout(new BorderLayout(0, 10));
 		
 		JPanel pnWest = new JPanel();
@@ -36,13 +39,13 @@ public class Payment extends JFrame{
 		panel.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		fullName = new TextField();
-		adress = new TextField();
+		address = new TextField();
 		phoneNumber = new TextField();
 		
 		panel.add(new JLabel("Full Name"));
 		panel.add(fullName);
 		panel.add(new JLabel("Address"));
-		panel.add(adress);
+		panel.add(address);
 		panel.add(new JLabel("Phone Number"));
 		panel.add(phoneNumber);
 		
@@ -55,7 +58,8 @@ public class Payment extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				new Bill(a, b, fullName.getText(), adress.getText(), phoneNumber.getText());
+				History.add(new Customer(fullName.getText(), address.getText(), phoneNumber.getText()));
+				new Bill(a, b, fullName.getText(), address.getText(), phoneNumber.getText());
 				dispose();
 			}
 		}, "OK");

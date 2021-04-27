@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,14 +22,18 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import function.CreateExcel;
-import struct.*;
+import struct.Device;
+import struct.DeviceList;
+import struct.Laptop;
+import struct.Phone;
 
 public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
+	
+	private static final long serialVersionUID = 1198421238967572921L;
 	private JButton add, update, clear, delete, export, sell;
 	private JLabel status;
 	private JTable table;
@@ -72,7 +75,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			if (type == Device.LAPTOP_TYPE) deviceList.add(new Laptop(o));
 			else deviceList.add(new Phone(o));
 		}
-		load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
+		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
 	}
 	
 	
@@ -245,7 +248,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		if (arg0.getSource() == add) {
 			if (check()) {
 				deviceList.add(getInfo());
-				load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
 				clear();
 			}
 			
@@ -259,7 +262,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			if (rowIndx < 0) status.setText("Please select a row first!");
 			else if (check()) {
 				deviceList.modify((int) indxList.get(rowIndx), getInfo());
-				load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
 				clear();
 			}
 		}
@@ -289,9 +292,9 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			int rowIndx = table.getSelectedRow();
 			if (rowIndx < 0) status.setText("Please select a row first!");
 			else {
-				new Payment(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
+				new CustomerInfo(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
 				deviceList.pay((int) indxList.get(rowIndx));
-				load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
 				clear();
 			}
 		}
@@ -306,7 +309,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		load(deviceList.searchByMakeAndName(brandSearch.getText(), nameSearch.getText()));
+		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
 	}
 
 	@Override
