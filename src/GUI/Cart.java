@@ -17,20 +17,20 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import struct.Customer;
 import struct.Device;
 
 /*
- * Done
- * Show Bill of a customer
+ * Show all device are being in the cart, 
+ * then fill info of customer owning this cart to pay
  */
-public class Bill extends JFrame{
+public class Cart extends JFrame{
 	
 	List<Device> list;
 	private JTable table;
 	
-	public Bill(Customer customer){
-		list = customer.getCart().getList();
+	
+	public Cart(struct.MainProcess mp){
+		list = mp.getCustomer().getCart().getList();
 		setLayout(new BorderLayout(0, 10));
 		
 		JPanel pnWest = new JPanel();
@@ -39,7 +39,7 @@ public class Bill extends JFrame{
 		JPanel pnEast = new JPanel();
 		add(pnEast, BorderLayout.EAST);
 		
-		JLabel title = new JLabel("BILL");
+		JLabel title = new JLabel("CART");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setFont(new Font("Tahoma", Font.BOLD, 20));
 		title.setPreferredSize(new Dimension(0, 40));
@@ -55,41 +55,41 @@ public class Bill extends JFrame{
 		info.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		info.add(new JLabel("Full Name"));
-		info.add(new JLabel(customer.getFullName()));
+		
+		TextField fullName = new TextField();
+		info.add(fullName);
 		
 		info.add(new JLabel("Address"));
-		info.add(new JLabel(customer.getAddress()));
+		
+		TextField address = new TextField();
+		info.add(address);
 		
 		info.add(new JLabel("Phone Number"));
-		info.add(new JLabel(customer.getPhoneNumber()));
+		
+		TextField phoneNumber = new TextField();
+		info.add(phoneNumber);
 		
 		JPanel pnSouth = new JPanel();
-		pnSouth.setPreferredSize(new Dimension(0, 70));
-		pnSouth.setLayout(new BorderLayout(10, 10));
+		pnSouth.setPreferredSize(new Dimension(0, 50));
 		add(pnSouth, BorderLayout.SOUTH);
-		
-		JLabel status = new JLabel("    Total Cost: " + String.valueOf(customer.getCart().getTotalCost()) + " USD");
-		pnSouth.add(status, BorderLayout.NORTH);
-		
-		JPanel pnClose = new JPanel();
-		pnClose.setLayout(new FlowLayout(FlowLayout.CENTER));
-		Button close = new Button(Button.NOMAL_BUTTON, new ActionListener() {
+		pnSouth.setLayout(new FlowLayout(FlowLayout.CENTER));
+		Button pay = new Button(Button.NOMAL_BUTTON, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				mp.pay(fullName.getText(), address.getText(), phoneNumber.getText());
 				dispose();
 			}
-		}, "Close");
-		close.setPreferredSize(new Dimension(100, 32));
-		pnClose.add(close);
-		pnSouth.add(pnClose);
+		}, "Pay");
+		pay.setPreferredSize(new Dimension(100, 32));
+		pnSouth.add(pay);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.CENTER);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		String[] t = {"Type", "Brand", "Name", "Model", "Year", "Color", "Amount", "Price"};
+		String[] t = {"Type", "Brand", "Name", "Model", "Year", "Color", "Amount", "Sell Price"};
 		DefaultTableModel model = new DefaultTableModel();
 		table.setModel(model);
 		model.setColumnIdentifiers(t);
@@ -106,10 +106,15 @@ public class Bill extends JFrame{
 		set();
 	}
 	
+//	public void 
+	
+	
 	private void set() {
 		setSize(600, 500);
 		setLocationRelativeTo(null);
-		setTitle("Bill");
+		setTitle("Cart");
 		setVisible(true);
 	}
+	
+	
 }

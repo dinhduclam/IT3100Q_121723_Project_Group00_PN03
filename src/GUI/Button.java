@@ -1,5 +1,6 @@
 package GUI;
 
+
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
@@ -7,6 +8,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/*
+ * Decorate all JButton in the program
+ */
 public class Button extends JButton{
 	
 	public static final int NOMAL_BUTTON = 0;
@@ -20,25 +24,21 @@ public class Button extends JButton{
 			setForeground(SystemColor.info);
 			setFont(new Font("Tahoma", Font.PLAIN, 14));
 			setBackground(SystemColor.activeCaption);
-			setBounds(0, 136, 130, 47);
 			setBorder(null);
 		}
 		setText(text);
 		addActionListener(a);
 	}
+	
 	public Button(int buttonType, ActionListener a, String text, ImageIcon icon){
-		if (buttonType == NOMAL_BUTTON) {
-			setContentAreaFilled(false);
-		}
-		else if (buttonType == CHOOSE_BUTTON) {
-			setForeground(SystemColor.info);
-			setFont(new Font("Tahoma", Font.PLAIN, 14));
-			setBackground(SystemColor.activeCaption);
-			setBounds(0, 136, 130, 47);
-			setBorder(null);
-		}
-		setText(text);
-		addActionListener(a);
+		this(buttonType, a, text);
 		setIcon(icon);
+	}
+	
+	public Button(ActionListener a, ImageIcon icon) {
+		setIcon(icon);
+		addActionListener(a);
+		setBackground(SystemColor.activeCaption);
+		setBorder(null);
 	}
 }

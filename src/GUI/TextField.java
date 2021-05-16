@@ -1,11 +1,15 @@
 package GUI;
 
+
 import java.awt.Color;
 
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
+/*
+ * Decorate all JTextField in the program
+ */
 public class TextField extends JTextField{
 	
 	public TextField() {

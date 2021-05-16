@@ -8,23 +8,27 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import struct.Device;
+import struct.MainProcess;
 
 public class Home extends JFrame implements ActionListener {
-	private Button btLaptop, btPhone, btHistory;
+	private Button btLaptop, btPhone, btHistory, btCart;
 	private JPanel pnChoose, pnCenter, cardDevice, laptop, phone, history;
 	private CardLayout card;
+	
+	protected MainProcess mp = new MainProcess();
 	
 	public Home() {
 		// TODO Auto-generated constructor stub
 		window();
-		laptop = new DeviceGUI("laptop", Device.LAPTOP_TYPE, Device.LAPTOP_NUMBER_OF_STATE, Device.LAPTOP_COLUMN_TITLE);
-		phone = new DeviceGUI("smart phone", Device.PHONE_TYPE, Device.PHONE_NUMBER_OF_STATE, Device.PHONE_COLUMN_TITLE);
+		laptop = new DeviceGUI(mp, btCart, "laptop", Device.LAPTOP_TYPE, Device.LAPTOP_COLUMN_TITLE.length, Device.LAPTOP_COLUMN_TITLE);
+		phone = new DeviceGUI(mp, btCart, "smart phone", Device.PHONE_TYPE, Device.PHONE_COLUMN_TITLE.length, Device.PHONE_COLUMN_TITLE);
 		history = new History();
 		
 		pnCenter = new JPanel();
@@ -38,7 +42,7 @@ public class Home extends JFrame implements ActionListener {
 		
 		pnCenter.setLayout(new BorderLayout());
 		pnCenter.add(cardDevice, BorderLayout.CENTER);
-		add(pnCenter);
+		getContentPane().add(pnCenter);
 		set();
 	}
 
@@ -46,7 +50,7 @@ public class Home extends JFrame implements ActionListener {
 		pnChoose = new JPanel();
 		pnChoose.setPreferredSize(new Dimension(130, 10));
 		pnChoose.setBackground(SystemColor.activeCaption);
-		add(pnChoose, BorderLayout.WEST);
+		getContentPane().add(pnChoose, BorderLayout.WEST);
 		pnChoose.setLayout(null);
 
 		JLabel welcome = new JLabel("WELCOME!");
@@ -68,38 +72,49 @@ public class Home extends JFrame implements ActionListener {
 		btHistory.setBounds(0, 570, 130, 47);
 		pnChoose.add(btHistory);
 		
-		JLabel lbTitle = new JLabel("DEVICE MANAGEMENT");
+		JLabel lbTitle = new JLabel("STORE MANAGEMENT");
+		lbTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lbTitle.setFont(new Font("Tahoma", Font.BOLD, 18));
+		
 
+		btCart = new Button(this, new ImageIcon("src/icon/cart_empty.png"));
+		
 		JPanel pnTitle = new JPanel();
+		pnTitle.setLayout(new BorderLayout(20, 0));
 		pnTitle.setBackground(SystemColor.activeCaption);
 		pnTitle.add(lbTitle);
+		pnTitle.add(btCart, BorderLayout.EAST);
 		add(pnTitle, BorderLayout.NORTH);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-		btLaptop.setBackground(SystemColor.activeCaption);
-		btPhone.setBackground(SystemColor.activeCaption);
-		btHistory.setBackground(SystemColor.activeCaption);
-		
-		if (arg0.getSource() == btLaptop) {
-			card.show(cardDevice, "laptop");
-			btLaptop.setBackground(SystemColor.activeCaptionBorder);
-		} else if (arg0.getSource() == btPhone) {
-			card.show(cardDevice, "phone");
-			btPhone.setBackground(SystemColor.activeCaptionBorder);
+		if (arg0.getSource() == btCart) {
+			new Cart(mp);
+			btCart.setIcon(new ImageIcon("src/icon/cart_empty.png"));
 		}
-		else if (arg0.getSource() == btHistory) {
-			card.show(cardDevice, "history");
-			btHistory.setBackground(SystemColor.activeCaptionBorder);
+		else {
+			btLaptop.setBackground(SystemColor.activeCaption);
+			btPhone.setBackground(SystemColor.activeCaption);
+			btHistory.setBackground(SystemColor.activeCaption);
+			
+			if (arg0.getSource() == btLaptop) {
+				card.show(cardDevice, "laptop");
+				btLaptop.setBackground(SystemColor.activeCaptionBorder);
+			} else if (arg0.getSource() == btPhone) {
+				card.show(cardDevice, "phone");
+				btPhone.setBackground(SystemColor.activeCaptionBorder);
+			}
+			else if (arg0.getSource() == btHistory) {
+				card.show(cardDevice, "history");
+				btHistory.setBackground(SystemColor.activeCaptionBorder);
+			}
 		}
-
 	}
 
 	private void set() {
-		setSize(1200, 700);
+		setSize(1300, 700);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setTitle("Device Management");

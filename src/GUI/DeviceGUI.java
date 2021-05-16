@@ -19,6 +19,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,30 +30,41 @@ import function.CreateExcel;
 import struct.Device;
 import struct.DeviceList;
 import struct.Laptop;
+import struct.MainProcess;
 import struct.Phone;
 
+/*
+ * 
+ * doi mau cho sp het hang
+ */
 public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
-	
-	private static final long serialVersionUID = 1198421238967572921L;
-	private JButton add, update, clear, delete, export, sell;
+	private JButton add, update, clear, delete, export, addToCart;
 	private JLabel status;
 	private JTable table;
 	private DefaultTableModel tableModel;
-	private TextField[] stateTextFields = new TextField[10];
+	private TextField[] stateTextFields;
 	private TextField brandSearch, nameSearch;
+	private String[] menu = {"All", "Stocking"};
+	private JComboBox<String> comboBox = new JComboBox<String>(menu);
 	
 	private String deviceName;
 	private int type;
 	private int numberOfState;
 	private String[] colTitle;
-	private DeviceList deviceList = new DeviceList();
-	private List<Integer> indxList = new ArrayList<>();
+	private MainProcess mp;
+	private Button btCart;
 	
-	DeviceGUI(String deviceName, int type, int numberOfState, String[] colTitle) {
+	private DeviceList deviceList = new DeviceList();
+	private List<Device> searchedList = new ArrayList<>();
+	
+	DeviceGUI(MainProcess m, Button btCart, String deviceName, int type, int numberOfState, String[] colTitle) {
+		this.mp = m;
+		this.btCart = btCart;
 		this.deviceName = deviceName;
 		this.type = type;
 		this.numberOfState = numberOfState;
 		this.colTitle = colTitle;
+		stateTextFields = new TextField[numberOfState];
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -75,14 +87,13 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 			if (type == Device.LAPTOP_TYPE) deviceList.add(new Laptop(o));
 			else deviceList.add(new Phone(o));
 		}
-		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
+		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
 	}
 	
 	
 	private void createPnLeft() {
 		JPanel pnLeft = new JPanel();
 		pnLeft.setLayout(new BorderLayout(0, 0));
-
 		
 		/* Set title for the Panel
 		 * title is deviceName (a parameter of DeviceGUI contructor) 
@@ -92,8 +103,8 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		 */
 		JPanel pnTitle = new JPanel();
 		pnTitle.setPreferredSize(new Dimension(0, 30));
-		pnLeft.add(pnTitle, BorderLayout.NORTH);
 		pnTitle.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		pnLeft.add(pnTitle, BorderLayout.NORTH);
 
 		JLabel title = new JLabel(deviceName.toUpperCase());
 		title.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -138,7 +149,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		update = new Button(Button.NOMAL_BUTTON, this, "Update");
 		clear = new Button(Button.NOMAL_BUTTON, this, "Clear");
 		delete = new Button(Button.NOMAL_BUTTON, this, "Delete");
-		sell = new Button(Button.NOMAL_BUTTON, this, "Sell");
+		addToCart = new Button(Button.NOMAL_BUTTON, this, "Add To Cart", new ImageIcon("src/icon/cart.png"));
 		export = new Button(Button.NOMAL_BUTTON, this, "Export (Excel)", new ImageIcon("src/icon/excel.png"));
 		
 		pnButtonList.add(add);
@@ -146,7 +157,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		pnButtonList.add(clear);
 		pnButtonList.add(delete);
 		
-		pnExportAndPay.add(sell);
+		pnExportAndPay.add(addToCart);
 		pnExportAndPay.add(export);
 		
 		pnSouth.add(pnButtonList);
@@ -179,14 +190,25 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		pnFind.add(nameSearch);
 		pnRight.add(pnFind, BorderLayout.NORTH);
 		
-
+		JPanel separator1 = new JPanel();
+		separator1.setPreferredSize(new Dimension(50, 0));
+		pnFind.add(separator1);
+		comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
+			}
+		});
+		pnFind.add(comboBox);
+		
 		table = new JTable();
 		tableModel = new DefaultTableModel();
 		tableModel.setColumnIdentifiers(colTitle);
 		table.setModel(tableModel);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(600, 0));
 		pnRight.add(scrollPane);
 
 		
@@ -234,12 +256,12 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		return t;
 	}
 	
-	private void load(List<Integer> indxList) {
-		this.indxList = indxList;
+	private void load(List<Device> searchedList) {
+		this.searchedList = searchedList;
 		tableModel.setNumRows(0);
 
-		for (Integer indx : indxList) {
-			tableModel.addRow(deviceList.getDevice(indx).getStringArray());
+		for (Device dv : searchedList) {
+			tableModel.addRow(dv.getStringArray());
 		}
 	}
 	
@@ -248,7 +270,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		if (arg0.getSource() == add) {
 			if (check()) {
 				deviceList.add(getInfo());
-				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
 				clear();
 			}
 			
@@ -259,17 +281,18 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		}
 		else if (arg0.getSource() == update) {
 			int rowIndx = table.getSelectedRow();
-			if (rowIndx < 0) status.setText("Please select a row first!");
+			if (rowIndx < 0) status.setText("Please select a Device first!");
 			else if (check()) {
-				deviceList.modify((int) indxList.get(rowIndx), getInfo());
-				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
+				deviceList.modify(searchedList.get(rowIndx), getInfo());
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
 				clear();
 			}
 		}
 		else if (arg0.getSource() == delete) {
 			int rowIndx = table.getSelectedRow();
 			while (rowIndx >= 0) {
-				deviceList.rm((int) indxList.get(rowIndx));
+				deviceList.rm(searchedList.get(rowIndx));
+				searchedList.remove(rowIndx);
 				tableModel.removeRow(rowIndx);
 				rowIndx = table.getSelectedRow();
 				clear();
@@ -278,7 +301,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		else if (arg0.getSource() == export) {
 			CreateExcel excel;
 			try {
-				excel = new CreateExcel(deviceList.getList(), colTitle, deviceName);
+				excel = new CreateExcel(searchedList, colTitle, deviceName);
 				status.setText("Created file: " + excel.getPath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -288,14 +311,14 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 				e.printStackTrace();
 			}
 		}
-		else if (arg0.getSource() == sell) {
+		else if (arg0.getSource() == addToCart) {
 			int rowIndx = table.getSelectedRow();
-			if (rowIndx < 0) status.setText("Please select a row first!");
+			if (rowIndx < 0) status.setText("Please select a Device first!");
 			else {
-				new CustomerInfo(colTitle, deviceList.getDevice((int) indxList.get(rowIndx)).getStringArray());
-				deviceList.pay((int) indxList.get(rowIndx));
-				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
+				mp.addToCart(searchedList.get(rowIndx));
+				load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
 				clear();
+				btCart.setIcon(new ImageIcon("src/icon/cart_noti.png"));
 			}
 		}
 	}
@@ -309,7 +332,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText()));
+		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
 	}
 
 	@Override
