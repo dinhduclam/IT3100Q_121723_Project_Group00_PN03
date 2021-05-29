@@ -1,7 +1,7 @@
 package struct;
 
 /*
- * Author: Dinh Duc Lam
+ * Author: Tran Duc Viet
  */
 public class MainProcess {
 	private Customer customer = new Customer();
