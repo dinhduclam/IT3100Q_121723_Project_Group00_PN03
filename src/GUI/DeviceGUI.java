@@ -74,9 +74,14 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		add(separator);
 		/*************/
 		createPnRight();
-		loadDataTest();
+//		loadDataTest();
 	}
 
+	/*
+	 * Method loadDataTest use to load demo data declared at class struct.Device  
+	 */
+	
+	/*
 	public void loadDataTest() {
 		String testData[][];
 		if (type == Device.LAPTOP_TYPE) testData = Device.LAPTOP_TEST_DATA;
@@ -88,7 +93,7 @@ public class DeviceGUI extends JPanel implements ActionListener, KeyListener {
 		}
 		load(deviceList.searchByBrandAndName(brandSearch.getText(), nameSearch.getText(), comboBox.getSelectedIndex()));
 	}
-	
+	*/
 	
 	private void createPnLeft() {
 		JPanel pnLeft = new JPanel();

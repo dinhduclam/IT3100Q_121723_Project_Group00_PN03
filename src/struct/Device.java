@@ -19,6 +19,10 @@ public abstract class Device {
 	public final static String[] LAPTOP_COLUMN_TITLE = { "Brand", "Name", "Model", "Year", "Color", "Amount", "Sell Price", "Cost Price", "CPU", "RAM (GB)", "Hard Disk (GB)" };
 	public final static String[] PHONE_COLUMN_TITLE = { "Brand", "Name", "Model", "Year", "Color", "Amount", "Sell Price", "Cost Price", "Screen Size (inchs)", "Battery Life (hous)", "Camera (MP)" };
 
+	/*
+	 * data used to demo
+	 */
+	/*
 	public final static String [][]LAPTOP_TEST_DATA = {
 			{"Acer", "Aspire VX5-591G", "VX5-591G-62YZ", "2017", "Black", "1", "890", "700", "Intel Core i5 7300HQ", "8", "1000"},
 			{"Dell", "Vostro 3500", "V5I3001W", "2020", "Black", "1", "550", "434.4", "Intel Core I5 1035G1", "8", "256"} ,
@@ -42,6 +46,7 @@ public abstract class Device {
 			{"Oppo", "OPPO Reno2 Z", "CPH1951", "2020", "Luminous Black", "1", "494.97", "294", "6.5", "5000", "48.0"}
 			
 	};
+	*/
 	
 	public Device(Device dv) {
 		this.brand = dv.brand;
